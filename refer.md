@@ -32,4 +32,11 @@ CAN ALSO USE <command> --help for this
 
 SHELL SCRIPTS chain together shell commands
 
+9. alias: assign a command to a custom command
+NOTE: after adding alias, either restart terminal or run "source ~/.bashsrc"
+10. ps: lists all running processes
+11. rm: delete file
+12. mkdir: make directory
+13. rmdir: remove directory
+14. whoami: current user
 

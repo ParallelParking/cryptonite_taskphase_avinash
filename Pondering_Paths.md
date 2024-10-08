@@ -15,7 +15,7 @@ NOTE THAT challenges on pwn.college live at /challenge
 ## CURRENT WORKING DIRECTORY
 describes the directory the shell process is currently active in
 
-This directory can be controlled via command "cd <fileloc>"
+This directory can be controlled via command "cd fileloc"
 
 ## RELATIVE PATHS
 -> following on from my earlier comparatives to math, the idea that there must be a unique path to every node from the root node, coupled with the fact that all nodes of a tree must be root nodes of respective subtrees, means that there must be a UNIQUE path from every node to every other node

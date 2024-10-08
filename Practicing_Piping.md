@@ -85,4 +85,121 @@ $ echo COLLEGE > PWN
 $ /challenge/run < PWN
 ```
 
+*Challenge 6: pwn.college{UaPGNwIPCEwOCfOXQFAMM2foCFB.dhTM4QDLwEDN1czW}*
 
+Commands run:
+
+```bash
+$ /challenge/run > /tmp/data.txt
+$ grep pwn.college /tmp/data.txt
+```
+
+## The pipe operator '|'
+
+outputs from command left of pipe will be "piped" into command right of pipe. This cuts out the middleman use of a file.
+
+*Challenge 7: pwn.college{8aY_wnJHaNDxLsPJzaXMhIecQDF.dlTM4QDLwEDN1czW}*
+
+Command run:
+
+```bash
+$ /challenge/run | grep pwn.college
+```
+
+## Grepping errors directly
+
+This seems impossible, as there is no equivalent pipe operator for stderr, however we can redirect an FD to another FD.
+
+We are simply routing the contents of some channel through another channel, for example as in this case, we plan on routing stderr through stdout. This makes our original problem straightorward, we can simply reroute stderr and then pipe grep it.
+
+To accomplish this reroute we use the '>&' operator. For example: 2>& 1 reroutes FD2 through FD1 (as discussed, FD2 is stderr and FD1 is stdout)
+
+*Challenge 8: pwn.college{Q6yu6Aiy1ywGhj25wxl4tX0d8G7.dVDM5QDLwEDN1czW}*
+
+Command run:
+
+```bash
+$ /challenge/run 2>& 1 | grep pwn.college
+```
+
+## 'tee'
+
+when data is piped between commands, it no longer displays in the shell, to deal with this, the tee command is used (named after the T-splitter from plumbing pipes). This tee command will duplicate data any number of times necessary. For example:
+
+```bash
+$ echo hi | tee pwn college
+hi
+$ cat pwn
+hi
+$ cat college
+hi
+```
+
+*Challenge 9: pwn.college{s65khS2JBbZ2s0ly6klBFikA-dj.dFjM5QDLwEDN1czW}*
+
+### Solving challenge 9: duplicating piped data with tee
+
+I was initially quite confused as to exactly what the challenge wanted from me, but on trying to tee & pipe directly into challenge file the hint message helped me understand what to do. From there, it was fairly straightforward. I used tee as a debugging middleman tool to obtain the secret key and proceeded to pipe pwn file with secret key arg to college file.
+
+Commands run:
+
+```bash
+$ /challenge/pwn | tee pwnop | /challenge/college
+$ cat pwnop
+$ /challenge/pwn --secret s65khS2J | /challenge/college
+```
+
+NOTE: See Module 5 for some notes on process substitution
+
+\>(command) : here, writing to another command will provide input for mentioned command
+
+The process subtitution does this by first reading from stdin, hooking up its input to a temporary "named file", processing via command, then writing to stdout.
+
+Writing to the named file of command will pipe data to the stdin of the command. This is typically done using commands that take output files as argument, eg. tee.
+
+For example:
+
+```bash
+$ echo HACK | tee >(rev)
+HACK
+KCAH
+```
+
+here, several things are happening:
+
+1. bash starts up rev command, hooking named pipe to rev's standard input.
+2. bash starts up tee, hooking pipe to its stdin and replacing its first arg with /path/to/named/pipe.tee
+3. bash uses echo to print HACK into tee's stdin
+4. tee reads HACKm writes it to stdout, then writes it into named pipe
+5. named pipe is connected to rev's stdin, so rev reads HACK, reverses it, and writes KCAH to stdout.
+
+*Challenge 10: pwn.college{soGeCL-pbSLLJbklCOUXmSTAuNi.dBDO0UDLwEDN1czW}*
+
+Command run:
+
+```bash
+/challenge/hack | tee >(/challenge/the) | tee >(/challenge/planet)
+```
+
+### Intuition behind Challenge 10
+
+program hack outputs something, piped to file the, data of the piped to write to file planet. Finally, contents of planet outputted.
+
+*Challenge 11: pwn.college{ci80ivMLwI0t76de4jXrxAEh80q.dFDNwYDLwEDN1czW}*
+
+### Solving challenge 11: split-piping stderr and stdout
+
+We were told in the trivia section of an earlier challenge that command > >(command) was equivalent to command | command. This is, in broad strokes, true. However, the key difference helps us solve this problem:
+
+command > >(command) > >(command) is NOT equivalent to command | command | command. in the former case, command1 is redirecting into both command2 and command3, whereas in the latter case, command1 flows into command2 flows into command3.
+
+Thus, in this situation we must utilise the former, that allows us to simultaneously redirect into 2 programs. Further, we want to write stderr input into one of the programs, this can simply be done by replacing one > with a 2>.
+
+Hence, the final command to solve the problem is:
+
+```bash
+$ cd /challenge/
+$ ./hack > >(./planet) 2> >(./the)
+```
+
+Module 6, fin.

@@ -26,7 +26,7 @@ The grep command derives its name from g/re/p, or "Globally (g) search for a Reg
 
 Hence the functionality of grep becomes obvious, it is a command that will search a given file for a substring and print all matching instances of it.
 
-grep <searchString> /path/to/file
+grep searchString /path/to/file
 
 NOTE: all flags on pwn.college begin with the substring pwn.college.
 
@@ -67,7 +67,7 @@ mkdir stands for "make directory". Does exactly what it sounds like.
 "Finds" in a directory subject to certain criterion. The arguments find takes broadly describes 2 things: the criteria of search and the search location. Without the former, every file is matched, and without the latter the cwd is taken as implicit.
 
 General syntax goes:
-find <searchloc> <criteria>
+find searchloc criteria
 eg. find /tmp -name avina
 this will search directory /tmp for all files named avina.
 

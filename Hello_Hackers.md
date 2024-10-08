@@ -1,6 +1,14 @@
 # HELLO HACKERS MODULE
+<<<<<<< HEAD
 
 NOTE: the pwn flags have not been pasted for modules 1 and 2. They are pasted module 3 onwards.
+=======
+<<<<<<< HEAD
+=======
+
+NOTE: the pwn flags have not been pasted for modules 1 and 2. They are pasted module 3 onwards.
+>>>>>>> abe27a2 (Added disclaimer to module 1)
+>>>>>>> 4724e7a4a6b370559ca1b5344b2b58337c5d1ad5
 
 Not much to write here, only resource I referred to was the problem description and the detailed shell guide provided on pwn.college (Link below)
 

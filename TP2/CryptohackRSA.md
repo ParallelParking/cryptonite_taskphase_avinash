@@ -35,5 +35,6 @@ https://www.youtube.com/watch?v=4zahvcJ9glg
 - Find the product of our numbers, so here that's 14 (you'll notice, this becomes part of the ordered pair in both our public and private keys)
 - We have to calculate the 'Phi function' of this number 14. The output of this function is the count of numbers that are coprime to the input and less than it. In the case of 14, these numbers are 1,3,5,9,11,13. Thus, there are 6 of them and 6 is the output of the function.
 - Practically, the product of our primes will be several magnitudes larger, so there is a much easier way to calculate count of coprimes. Say our original prime numbers, 2 & 7 are p & q. The count of coprimes of the product pq for any p & q is given by (p-1)(q-1). eg. 1\*6=6.
-$Phi
+
+&#934
 

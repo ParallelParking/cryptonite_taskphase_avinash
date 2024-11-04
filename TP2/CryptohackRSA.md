@@ -32,9 +32,38 @@ https://www.youtube.com/watch?v=4zahvcJ9glg
 ## GENERATING OUR KEYS
 
 - Pick 2 prime numbers, say 2 & 7
-- Find the product of our numbers, so here that's 14 (you'll notice, this becomes part of the ordered pair in both our public and private keys)
-- We have to calculate the 'Phi function' of this number 14. The output of this function is the count of numbers that are coprime to the input and less than it. In the case of 14, these numbers are 1,3,5,9,11,13. Thus, there are 6 of them and 6 is the output of the function.
-- Practically, the product of our primes will be several magnitudes larger, so there is a much easier way to calculate count of coprimes. Say our original prime numbers, 2 & 7 are p & q. The count of coprimes of the product pq for any p & q is given by (p-1)(q-1). eg. 1\*6=6.
+- Find the product of our numbers, so here that's 14 (you'll notice, this becomes part of the ordered pair in both our public and private keys). This number is referred to as 'N'
+- We have to calculate the 'Phi function' of this number 14. The output of this function is the count of numbers that are coprime to the input and less than it. In the case of 14, these numbers are 1,3,5,9,11,13. Thus, there are 6 of them and 6 is the output of the function. I will refer to the output of the Phi function with an F (Can't get Greek letters to work lol)
+- Practically, the product of our primes will be several magnitudes larger, so there is a much easier way to calculate count of coprimes. Say our original prime numbers, 2 & 7 are p & q. The count of coprimes of the product pq for any p & q is given by (p-1)(q-1). eg. 1\*6=6. 
+- Now, to choose the first number of our public number pair (we're calling this 'e'), it must satisfy the following conditions: 
+	- 1 < e < F
+	- e is coprime with both N and F
+- So here, e can be by first criteria, 2,3,4,5. However, 2,3,4 are all factors of either 6 or 14. Therefore, e = 5
+- Finally, to choose the first number of our private key (this is 'd'), it must satisfy the condition de (mod F) = 1. For example, d = 4, or d = 11.
+- We don't want to pick d = 4 as it makes hacking the encryption too easy.
 
-&#934
+NOTE: a common e is 65537
+
+NOTE: the Phi function is termed the 'Euler totient'
+
+NOTE: calculating d is actually the 'modular multiplicative inverse, i.e. d is e^-1 (mod F)
+## Challenges:
+
+1. 101^17 (mod 22663) = 19906
+2. 12^65537 (mod 17\*23) = 301
+3. Code:
+```py
+>>> p = 857504083339712752489993810777
+>>> q = 1029224947942998075080348647219
+>>> (p - 1) * (q - 1)
+882564595536224140639625987657529300394956519977044270821168
+```
+4. pow(65537, -1, (p - 1) * (q - 1))
+5. pow(c,d,p\*q)
+6. Code:
+```py
+s = pow(bytes_to_long(sha256("crypto{Immut4ble_m3ssag1ng}".encode('utf-8')).digest()),d,n)
+print(s)
+```
+
 

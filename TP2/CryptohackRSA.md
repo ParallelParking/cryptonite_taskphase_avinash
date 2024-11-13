@@ -66,4 +66,38 @@ s = pow(bytes_to_long(sha256("crypto{Immut4ble_m3ssag1ng}".encode('utf-8')).dige
 print(s)
 ```
 
+Crossed wires:
+
+```py
+from Cryptodome.Util import number
+
+N = ...
+
+friend_keys = [...]
+c = ...
+
+p = ...
+q = ...
+
+phi = (q-1)*(p-1)
+
+for key in friend_keys[::-1]:
+    d = number.inverse(key[1], phi)
+    c = pow(c, d, N)
+print(number.long_to_bytes(c))
+```
+
+Square eyes:
+```py
+N = ...
+p = int(math.isqrt(N))
+e = ...
+c = ...
+phi = (p - 1) * p
+d = inverse(e, phi)
+m = pow(c, d, N)
+m = long_to_bytes(m)
+print("Decrypted message:", m)
+```
+
 
